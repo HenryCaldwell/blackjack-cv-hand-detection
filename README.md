@@ -31,6 +31,7 @@ Press q at any time to exit the application.
 
 ## Project Structure
 
+```
 blackjack-cv-hand-detector/
 ├── annotator.py # Annotates frames with detection boxes and hand scores.
 ├── card_tracker.py # Tracks card detections across frames for stable label display.
@@ -40,6 +41,7 @@ blackjack-cv-hand-detector/
 ├── main.py # Main entry point that integrates all components and runs the application.
 ├── scorer.py # Calculates scores for hands based on standard card values.
 └── utils.py # Utility functions (e.g., computing overlap) used across modules.
+```
 
 ---
 
