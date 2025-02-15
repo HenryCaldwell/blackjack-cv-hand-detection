@@ -23,6 +23,8 @@ class Config:
       video_path (str): File path to the input video.
       inference_interval (float): Seconds between inference updates.
     """
+    self.use_webcam = False
+
     # Grouping & detection thresholds
     self.overlap_threshold = 0.1  # For grouping cards into hands
     self.inference_overlap_threshold = 0.9  # For non-max suppression and tracking

@@ -34,13 +34,16 @@ class CardDetectionApp:
     if not os.path.exists(config.yolo_path):
       raise FileNotFoundError(f"YOLO weights file not found at '{config.yolo_path}'.")
     
-    # Check that the video file exists
-    if not os.path.exists(config.video_path):
-      raise FileNotFoundError(f"Video file not found at '{config.video_path}'.")
+    # Use webcam if enabled, otherwise check that the video file exists
+    if config.use_webcam:
+      self.cap = cv2.VideoCapture(0)
+    else:
+      if not os.path.exists(config.video_path):
+        raise FileNotFoundError(f"Video file not found at '{config.video_path}'.")
+      self.cap = cv2.VideoCapture(config.video_path)
 
     # Initialize YOLO model, video capture, and tracking parameters
     self.model = YOLO(config.yolo_path)
-    self.cap = cv2.VideoCapture(config.video_path)
     self.last_update = 0.0
     self.annotated_frame = None
     self.tracker = CardTracker(
