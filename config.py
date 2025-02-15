@@ -23,7 +23,11 @@ class Config:
       video_path (str): File path to the input video.
       inference_interval (float): Seconds between inference updates.
     """
-    self.use_webcam = False
+    # Webcam, video, and model parameters
+    self.use_webcam = True # Use webcam stream vs video file
+    self.video_path = "resources/test_video.mov"  # Path to the video file
+    self.inference_interval = 0.25  # Seconds between inference updates
+    self.yolo_path = "resources/detection_weights.pt"  # Path to the YOLO weights file
 
     # Grouping & detection thresholds
     self.overlap_threshold = 0.1  # For grouping cards into hands
@@ -33,8 +37,3 @@ class Config:
     # Stability tracking parameters
     self.confirmation_frames = 5  # Number of frames to confirm a card label
     self.disappear_frames = 5  # Number of frames a card can be missing before it is dropped
-
-    # Paths and update interval
-    self.yolo_path = "resources/detection_weights.pt"  # Path to the YOLO weights file
-    self.video_path = "resources/test_video.mov"  # Path to the video file
-    self.inference_interval = 0.25  # Seconds between inference updates
