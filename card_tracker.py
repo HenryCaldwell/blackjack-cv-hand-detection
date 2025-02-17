@@ -9,7 +9,7 @@ manages detections that momentarily disappear.
 from utils import compute_overlap
 
 class CardTracker:
-  def __init__(self, confirmation_frames, disappear_frames, confidence_threshold, overlap_threshold):
+  def __init__(self, confirmation_frames, disappear_frames, confidence_threshold, overlap_threshold, deck=None):
     """
     Initializes the CardTracker with the specified tracking parameters.
     
@@ -23,7 +23,8 @@ class CardTracker:
     self.disappear_frames = disappear_frames
     self.confidence_threshold = confidence_threshold
     self.overlap_threshold = overlap_threshold
-    self.tracked_cards = {}  # Mapping: {box tuple: (stable_label, stable_confidence, frame_count)}
+    self.deck = deck
+    self.tracked_cards = {}  # Mapping: {box tuple: (stable_label, stable_confidence, frame_count, locked_flag)}
 
   def update(self, boxes, labels, confidences):
     """
@@ -52,28 +53,33 @@ class CardTracker:
 
       for prev_box in self.tracked_cards:
         if compute_overlap(box, list(prev_box)) >= self.overlap_threshold:
-          prev_label, prev_conf, frame_count = self.tracked_cards[prev_box]
+          prev_label, prev_conf, frame_count, locked_flag = self.tracked_cards[prev_box]
+
+          if frame_count < self.confirmation_frames:
+            frame_count += 1
+
+            if frame_count >= self.confirmation_frames and not locked_flag and self.deck is not None:
+              self.deck.remove_card(prev_label)
+              locked_flag = True
 
           if frame_count >= self.confirmation_frames:
             label = prev_label
-          else:
-            frame_count += 1
 
           matched = True
-          new_tracked[tuple(box)] = (label, confidence, frame_count)
+          new_tracked[tuple(box)] = (label, confidence, frame_count, locked_flag)
 
           break
 
       if not matched:
-          new_tracked[tuple(box)] = (label, confidence, 1 if confidence >= self.confidence_threshold else 0)
+        new_tracked[tuple(box)] = (label, confidence, 1 if confidence >= self.confidence_threshold else 0, False)
 
     # Handle disappearing cards: keep them for a few extra frames before removing
     for prev_box in self.tracked_cards:
       if prev_box not in new_tracked:
-        prev_label, prev_conf, frame_count = self.tracked_cards[prev_box]
+        prev_label, prev_conf, frame_count, locked_flag = self.tracked_cards[prev_box]
         
         if frame_count < self.disappear_frames:
-          new_tracked[prev_box] = (prev_label, prev_conf, frame_count + 1)
+          new_tracked[prev_box] = (prev_label, prev_conf, frame_count + 1, locked_flag)
     
     self.tracked_cards = new_tracked
 
@@ -81,7 +87,7 @@ class CardTracker:
     for box in boxes:
       for tracked_box in self.tracked_cards:
         if compute_overlap(box, list(tracked_box)) >= self.overlap_threshold:
-          stable_label, _, frame_count = self.tracked_cards[tracked_box]
+          stable_label, _, frame_count, _ = self.tracked_cards[tracked_box]
 
           if frame_count >= self.confirmation_frames:
             displayed_labels.append(stable_label)

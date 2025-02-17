@@ -15,6 +15,7 @@ from hand_detector import group_cards
 from scorer import calculate_hand_score
 from annotator import annotate_frame_with_scores
 from config import Config
+from deck import CardDeck
 from card_tracker import CardTracker
 
 class CardDetectionApp:
@@ -36,7 +37,7 @@ class CardDetectionApp:
     
     # Use webcam if enabled, otherwise check that the video file exists
     if config.use_webcam:
-      self.cap = cv2.VideoCapture(0)
+      self.cap = cv2.VideoCapture(config.webcam_index)
     else:
       if not os.path.exists(config.video_path):
         raise FileNotFoundError(f"Video file not found at '{config.video_path}'.")
@@ -46,11 +47,13 @@ class CardDetectionApp:
     self.model = YOLO(config.yolo_path)
     self.last_update = 0.0
     self.annotated_frame = None
+    self.deck = CardDeck()
     self.tracker = CardTracker(
       confirmation_frames=config.confirmation_frames,
       disappear_frames=config.disappear_frames,
       confidence_threshold=config.confidence_threshold,
-      overlap_threshold=config.inference_overlap_threshold
+      overlap_threshold=config.inference_overlap_threshold,
+      deck=self.deck
     )
   
   def process_frame(self, frame):
@@ -102,6 +105,7 @@ class CardDetectionApp:
       if current_time - self.last_update >= self.config.inference_interval:
         annotated_frame = self.process_frame(frame)
         self.last_update = current_time
+        print("Deck Composition: ", self.deck.get_counts())
       else:
         annotated_frame = self.annotated_frame if self.annotated_frame is not None else frame
 
