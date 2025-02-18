@@ -33,7 +33,7 @@ class Config:
     """
     # File paths
     self.yolo_path = "resources/detection_weights.pt"  # Path to the YOLO weights file
-    self.video_path = "C:/Users/User/Pictures/Camera Roll/WIN_20250217_01_34_58_Pro.mp4"  # Path to the video file
+    self.video_path = "example/video/path.mp4"  # Path to the video file
 
     # Webcam parameters
     self.use_webcam = False # Use webcam stream vs video file
