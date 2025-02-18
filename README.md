@@ -36,7 +36,7 @@ blackjack-cv-hand-detector/
 ├── annotator.py # Annotates frames with detection boxes and hand scores.
 ├── card_tracker.py # Tracks card detections across frames for stable label display.
 ├── config.py # Central configuration for thresholds, file paths, and update intervals.
-├── deck.py #
+├── deck.py # Manages the deck of cards, including counting via the Hi-Lo system.
 ├── hand_detector.py # Groups detected cards into hands using spatial analysis.
 ├── inference.py # Runs YOLO inference and applies Non-Maximum Suppression.
 ├── main.py # Main entry point that integrates all components and runs the application.
@@ -55,3 +55,4 @@ All settings are centralized in config.py. You can adjust:
 - File Paths: For the YOLO model and the video input.
 - Webcam Settings: Support for a configureable webcam index.
 - Update Intervals: The time gap between successive frame analyses.
+- Deck & Counting Parameters: e.g., deck_size for controlling the number of decks in play.

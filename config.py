@@ -38,3 +38,6 @@ class Config:
     # Stability tracking parameters
     self.confirmation_frames = 5  # Number of frames to confirm a card label
     self.disappear_frames = 10  # Number of frames a card can be missing before it is dropped
+
+    # Deck & counting parameters
+    self.deck_size = 1  # Number of decks in play

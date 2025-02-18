@@ -47,7 +47,7 @@ class CardDetectionApp:
     self.model = YOLO(config.yolo_path)
     self.last_update = 0.0
     self.annotated_frame = None
-    self.deck = CardDeck()
+    self.deck = CardDeck(config.deck_size)
     self.tracker = CardTracker(
       confirmation_frames=config.confirmation_frames,
       disappear_frames=config.disappear_frames,
