@@ -36,7 +36,7 @@ class Config:
     self.video_path = "example/video/path.mp4"  # Path to the video file
 
     # Webcam parameters
-    self.use_webcam = False # Use webcam stream vs video file
+    self.use_webcam = True # Use webcam stream vs video file
     self.webcam_index = 0 # Index of the webcam to use (0 for default)
 
     # Inference parameters

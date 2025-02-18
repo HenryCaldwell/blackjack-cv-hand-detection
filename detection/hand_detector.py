@@ -5,7 +5,7 @@ This module provides functions to group detected cards into hands based on spati
 the overlap computation from the utils module to decide which cards belong together.
 """
 
-from utils import compute_overlap
+from detection.detection_utils import compute_overlap
 
 def group_cards(boxes, threshold=0.1):
   """

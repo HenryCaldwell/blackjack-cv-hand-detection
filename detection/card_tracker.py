@@ -6,7 +6,7 @@ frames. It ensures that a card label is confirmed only after being stable for a 
 manages detections that momentarily disappear.
 """
 
-from utils import compute_overlap
+from detection.detection_utils import compute_overlap
 
 class CardTracker:
   def __init__(self, confirmation_frames, disappear_frames, confidence_threshold, overlap_threshold, deck=None):
