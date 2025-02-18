@@ -12,7 +12,7 @@ import time
 from ultralytics import YOLO
 from detection.inference import run_inference
 from detection.hand_detector import group_cards
-from game.scorer import calculate_hand_score
+from game.blackjack_utils import calculate_hand_score
 from detection.annotator import annotate_frame_with_scores
 from config import Config
 from game.deck import CardDeck
