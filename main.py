@@ -80,7 +80,7 @@ class CardDetectionApp:
       hand_cards = [stable_labels[idx] for idx in group if idx < len(stable_labels)]
       score = calculate_hand_score(hand_cards)
       hand_totals[hand_num] = score
-      print(f"Detected hand {hand_num} has score: {score}")
+      print(f"HAND {hand_num}; {score}")
 
     # Annotate the frame with detection and scoring details
     annotated = annotate_frame_with_scores(frame.copy(), boxes, groups, stable_labels, hand_totals)
@@ -98,19 +98,22 @@ class CardDetectionApp:
       if not ret:
         break
 
-      frame = cv2.resize(frame, (1280, 720))
+      inference_frame = cv2.resize(frame, self.config.inference_frame_size)
       current_time = time.time()
 
       # Process the frame only if the inference interval has passed
       if current_time - self.last_update >= self.config.inference_interval:
-        annotated_frame = self.process_frame(frame)
+        annotated_frame = self.process_frame(inference_frame)
         self.last_update = current_time
-        print("Deck Composition: ", self.deck.get_counts())
+        print(f"DECK COMP; {self.deck.get_counts()}")
+        print(f"RUNNING COUNT; {self.deck.get_running_count()} TRUE COUNT; {self.deck.get_true_count()}")
       else:
-        annotated_frame = self.annotated_frame if self.annotated_frame is not None else frame
+        annotated_frame = self.annotated_frame if self.annotated_frame is not None else inference_frame
 
       self.annotated_frame = annotated_frame
-      cv2.imshow("Card Detection & Scoring", annotated_frame)
+
+      display_frame = cv2.resize(annotated_frame, self.config.display_frame_size)
+      cv2.imshow("Card Detection & Scoring", display_frame)
 
       # Exit on 'q' key press
       if cv2.waitKey(1) & 0xFF == ord("q"):

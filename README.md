@@ -50,9 +50,23 @@ blackjack-cv-hand-detector/
 
 All settings are centralized in config.py. You can adjust:
 
-- Detection and Grouping Thresholds: e.g., overlap_threshold and inference_overlap_threshold.
-- Tracking Settings: Such as the number of frames required to confirm or drop a detection.
-- File Paths: For the YOLO model and the video input.
-- Webcam Settings: Support for a configureable webcam index.
-- Update Intervals: The time gap between successive frame analyses.
-- Deck & Counting Parameters: e.g., deck_size for controlling the number of decks in play.
+- File Paths:
+  - yolo_path: Path to the YOLO weights.
+  - video_path: Path to the video input.
+- Webcam Settings:
+  - use_webcam: Set to True to use a webcam stream.
+  - webcam_index: Index of the webcam to use.
+- Inference Parameters:
+  - inference_interval: Seconds between inference updates.
+  - inference_frame_size: Resolution for the frame used during inference.
+- Detection and Grouping Thresholds:
+  - overlap_threshold: Threshold for grouping cards into hands.
+  - inference_overlap_threshold: Overlap threshold for non-maximum supression and tracking.
+  - confidence_threshold: Minimum confidence required to consider a detection.
+- Tracking Settings:
+  - confirmation_frames: Number of consecutive frames required to confirm a card label.
+  - disappear_frames: Number of frames a card can be missing before it is dropped.
+- Deck & Counting Parameters:
+  - deck_size: Number of decks in play.
+- UI Parameters:
+  - display_frame_size: Resolution for the frame used during user display.
