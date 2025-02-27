@@ -1,17 +1,16 @@
 # Blackjack Computer Vision Analyzer
 
-This project is a Python computer vision application that uses deep learning to detect playing cards in real time. The system processes video streams to locate cards, groups them into hands using spatial clustering, computes scores based on standard card values, and overlays detailed annotations directly on the video frames for immediate analysis.
+A python computer vision application that uses deep learning to detect playing cards in real time. The system processes video streams to locate cards, groups them into hands using spatial clustering, computes scores based on standard card values, and overlays detailed annotations directly on the video frames for immediate analysis.
 
 ---
 
 ## Overview
 
-The application integrates several key modules to transform raw video data into an annotated output:
-
 - Detection: A YOLO-based model identifies playing cards in each frame.
 - Grouping: Detected cards are clustered into hands by analyzing spatial overlap.
-- Scoring: Hand scores are calculated by summing card values (with special handling for Aces).
+- Scoring: Hand scores are calculated by summing card values (with special handling for aces).
 - Annotation: Visual cues, including bounding boxes, card labels, hand numbers, and scores, are drawn on the frames.
+- Evaluation (Java): A Java evaluation engine (compiled separately) computes expected values (EV) for various actions. Integrated into the Python application via JPype.
 
 ---
 
@@ -19,11 +18,12 @@ The application integrates several key modules to transform raw video data into 
 
 During execution, the program will:
 
-1. Load the YOLO model from the specified weights.
-2. Open the designated video file or camera feed.
+1. Load YOLO weights and initialize the detection model.
+2. Start video capture from a designated video file or webcam.
 3. Process each frame to detect, track, and group cards.
-4. Compute scores for each detected hand.
-5. Display the annotated frame with real-time detection and scoring information.
+4. Compute scores, computer counts, and evaluate best play for each detected hand.
+5. Annotate the frame with bounding boxes, card labels, hand numbers (player hands and dealer hand), and scores.
+6. Display the annotated frame in real time.
 
 Press q at any time to exit the application.
 
@@ -32,23 +32,36 @@ Press q at any time to exit the application.
 ## Project Structure
 
 ```
-blackjack-cv-hand-detector/
-├── annotator.py # Annotates frames with detection boxes and hand scores.
-├── card_tracker.py # Tracks card detections across frames for stable label display.
-├── config.py # Central configuration for thresholds, file paths, and update intervals.
-├── deck.py # Manages the deck of cards, including counting via the Hi-Lo system.
-├── hand_detector.py # Groups detected cards into hands using spatial analysis.
-├── inference.py # Runs YOLO inference and applies Non-Maximum Suppression.
-├── main.py # Main entry point that integrates all components and runs the application.
-├── scorer.py # Calculates scores for hands based on standard card values.
-└── utils.py # Utility functions (e.g., computing overlap) used across modules.
+blackjack-cv-hand-detection/
+├── java/
+│   └── evaluation/
+│       ├── EVEngine.java  # Java evaluation engine for computing expected values (EV).
+│       ├── GameRules.java  # Configurable game rules for evaluation.
+│       └── StateKey.java  # Utility class for memoization state keys.
+├── python/
+│   ├── config/
+│   │   └── config.py  # Central configuration for file paths, thresholds, and UI parameters.
+│   ├── detection/
+│   │   ├── annotator.py  # Annotates frames with detection boxes, labels, and scores.
+│   │   ├── card_tracker.py  # Tracks card detections across frames to confirm labels.
+│   │   ├── detection_utils.py  # Utility functions (e.g., computing overlap) used across detection modules.
+│   │   ├── hand_detector.py  # Groups detected cards into hands; merges singletons into the dealer hand.
+│   │   └── inference.py  # Runs YOLO inference and applies Non-Maximum Suppression.
+│   └── blackjack/
+│       ├── deck.py  # Manages the deck of cards and counting (Hi-Lo system).
+│       └── blackjack_utils.py  # Helper functions for evaluating blackjack hands (e.g., scoring).
+├── resources/
+│   └── detection_weights.pt  # My custom trained YOLO model weights (you're welcome).
+├── main.py  # Main entry point that integrates Python detection/annotation and Java evaluation via JPype.
+└── README.md  # This file.
+
 ```
 
 ---
 
 ## Configuration
 
-All settings are centralized in config.py. You can adjust:
+All detection settings are centralized in config.py. You can adjust:
 
 - File Paths:
   - yolo_path: Path to the YOLO weights.
