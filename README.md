@@ -54,7 +54,6 @@ blackjack-cv-hand-detection/
 │   └── detection_weights.pt  # My custom trained YOLO model weights (you're welcome).
 ├── main.py  # Main entry point that integrates Python detection/annotation and Java evaluation via JPype.
 └── README.md  # This file.
-
 ```
 
 ---
