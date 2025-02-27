@@ -51,4 +51,17 @@ def group_cards(boxes, threshold=0.1):
 
       groups.append(group)
 
-  return groups
+  # Separate groups into player hands and dealer hand
+  player_hands = []
+  dealer_hand = []
+
+  for group in groups:
+    if len(group) == 1:
+      dealer_hand.extend(group)
+    else:
+      player_hands.append(group)
+
+  if not dealer_hand:
+    dealer_hand = None
+
+  return {"player_hands": player_hands, "dealer_hand": dealer_hand}

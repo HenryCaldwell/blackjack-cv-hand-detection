@@ -71,19 +71,28 @@ class CardDetectionApp:
       frame, self.model, overlap_threshold=self.config.inference_overlap_threshold
     )
 
-    stable_labels = self.tracker.update(boxes, labels, confidences)  # # Update tracker to obtain stable labels
-    groups = group_cards(boxes, threshold=self.config.overlap_threshold) if boxes else []  # Group cards based on spatial overlap
+    stable_labels = self.tracker.update(boxes, labels, confidences)  # Update tracker to obtain stable labels
+    hands_dict = group_cards(boxes, threshold=self.config.overlap_threshold) if boxes else {"player_hands": [], "dealer_hand": None} # Group cards using the updated grouping function
     hand_totals = {}  # Dictionary to store total scores for each hand
 
-    # Calculate scores for each hand and print the results
-    for hand_num, group in enumerate(groups, start=1):
-      hand_cards = [stable_labels[idx] for idx in group if idx < len(stable_labels)]
-      score = calculate_hand_score(hand_cards)
-      hand_totals[hand_num] = score
-      print(f"HAND {hand_num}; {score}")
+    # Calculate totals for player hands
+    hand_num = 1
+
+    for group in hands_dict.get("player_hands", []):
+      player_cards = [stable_labels[idx] for idx in group if idx < len(stable_labels)]
+      player_score = calculate_hand_score(player_cards)
+      hand_totals[hand_num] = player_score
+      hand_num += 1
+      print(f"HAND {hand_num}; {player_score}")
+
+    if hands_dict.get("dealer_hand") is not None:
+      dealer_cards = [stable_labels[idx] for idx in hands_dict["dealer_hand"] if idx < len(stable_labels)]
+      dealer_score = calculate_hand_score(dealer_cards)
+      hand_totals["dealer"] = dealer_score
+      print(f"DEALER HAND; {dealer_score}")
 
     # Annotate the frame with detection and scoring details
-    annotated = annotate_frame_with_scores(frame.copy(), boxes, groups, stable_labels, hand_totals)
+    annotated = annotate_frame_with_scores(frame.copy(), boxes, hands_dict, stable_labels, hand_totals)
 
     return annotated
 
