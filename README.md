@@ -50,9 +50,9 @@ blackjack-cv-hand-detection/
 │   └── blackjack/
 │       ├── deck.py  # Manages the deck of cards and counting (Hi-Lo system).
 │       └── blackjack_utils.py  # Helper functions for evaluating blackjack hands (e.g., scoring).
-├── resources/
-│   └── detection_weights.pt  # My custom trained YOLO model weights (you're welcome).
-├── main.py  # Main entry point that integrates Python detection/annotation and Java evaluation via JPype.
+├── bin/  # Compiled java classes (used for JPype bridging).
+├── resources/  # My custom trained YOLO model weights (you're welcome).
+├── main.py  # Main entry point for the program.
 └── README.md  # This file.
 ```
 
