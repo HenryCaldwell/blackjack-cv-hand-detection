@@ -7,7 +7,7 @@ out overlapping detections based on a specified overlap threshold.
 
 import numpy as np
 from ultralytics import YOLO
-from detection.detection_utils import compute_overlap
+from python.detection.detection_utils import compute_overlap
 
 def run_inference(frame, model, overlap_threshold=0.9):
   """
