@@ -101,7 +101,7 @@ public class EVEngine {
     }
 
     if (!canSplitHand(playerHand)) {
-      throw new IllegalArgumentException("Hand cannot be split.");
+      return Double.NEGATIVE_INFINITY;
     }
 
     return calculateSplitEV(valueCounts, playerHand, dealerHand, true);
@@ -288,7 +288,6 @@ public class EVEngine {
    *                    calculations.
    * @return The expected value (EV) for splitting.
    */
-  @SuppressWarnings("unused")
   private double calculateSplitEV(int[] valueCounts, List<Integer> playerHand, List<Integer> dealerHand,
       boolean isSplit) {
     StateKey stateKey = getStateKey(valueCounts, playerHand, dealerHand, true, "split");
