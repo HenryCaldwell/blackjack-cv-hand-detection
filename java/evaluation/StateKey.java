@@ -1,4 +1,4 @@
-package game;
+package java.evaluation;
 
 import java.util.Arrays;
 

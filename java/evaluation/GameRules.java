@@ -1,4 +1,4 @@
-package game;
+package java.evaluation;
 
 /**
  * Contains all the configurable rules for the blackjack game. Modify these
