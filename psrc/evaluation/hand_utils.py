@@ -1,7 +1,8 @@
 """
-Module for Blackjack utilities.
+Module for hand evaluation utilities.
 
-This module provides utility functions to assist in calculating game-related values for blackjack.
+This module provides helper functions for evaluating blackjack hands. It includes functionality for calculating
+the total score of a hand, correctly handling the flexible value of Aces and the fixed value of face cards.
 """
 
 from debugging.logger import setup_logger

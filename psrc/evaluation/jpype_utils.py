@@ -1,5 +1,5 @@
 """
-Module for JPype Conversion Utilities.
+Module for JPype conversion utilities.
 
 This module provides helper functions to convert Python data structures into Java-compatible formats
 required by the EV engine.

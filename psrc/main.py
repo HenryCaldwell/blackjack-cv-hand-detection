@@ -10,16 +10,16 @@ results.
 import cv2
 import time
 from ultralytics import YOLO
-from blackjack.blackjack_utils import calculate_hand_score
+from evaluation.hand_utils import calculate_hand_score
 from detection.inference import run_inference
 from detection.hand_detector import group_cards
 from annotation.annotator import annotate_frame_with_scores
 from config import Config
-from blackjack.deck import CardDeck
+from evaluation.deck import CardDeck
 from detection.card_tracker import CardTracker
 from debugging.logger import setup_logger
 from video.video_stream import VideoStreamReader
-from blackjack.ev_engine import EVEngineWrapper
+from evaluation.ev_engine import EVEngineWrapper
 
 logger = setup_logger(__name__)
 
