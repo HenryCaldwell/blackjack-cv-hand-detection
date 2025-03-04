@@ -9,33 +9,34 @@ update intervals, and frame sizes.
 class Config:
   def __init__(self):
     """
-    Initializes a new configuration instance with default parameter values.
+    A configuration class that initializes default settings for the card detection system.
     
     Attributes:
       yolo_path (str): File path to the YOLO weights.
-
-      use_webcam (bool): Flag to use webcam stream vs video file.
-      webcam_index (int): Index of the webcam to use (0 for default).
       video_path (str): File path to the input video.
+
+      use_webcam (bool): Flag to use a webcam stream instead of a video file.
+      webcam_index (int): Index of the webcam to use (0 for default).
+      
       inference_interval (float): Seconds between inference updates.
       inference_frame_size (tuple): Resolution (width, height) for the frame used during inference.
 
       overlap_threshold (float): Threshold for grouping cards into hands.
       inference_overlap_threshold (float): Overlap threshold for non-max suppression and tracking.
-      confidence_threshold (float): Minimum confidence required to consider a detection.
+      confidence_threshold (float): Minimum confidence required to consider a detection valid.
 
       confirmation_frames (int): Number of consecutive frames required to confirm a card label.
       disappear_frames (int): Number of frames a card can be missing before it is dropped.
 
       deck_size (int): Number of decks in play.
-
-      display_frame_size (tuple): Resolution (width, height) for the frame used during user display.
+      
+      display_frame_size (tuple): Resolution (width, height) for the frame used during display.
     """
     # File paths
     self.yolo_path = "resources/detection_weights.pt"  # Path to the YOLO weights file
     self.video_path = "C:/Users/User/Pictures/Camera Roll/WIN_20250217_01_34_58_Pro.mp4"  # Path to the video file
 
-    # Webcam parameters
+    # Video parameters
     self.use_webcam = False # Use webcam stream vs video file
     self.webcam_index = 0 # Index of the webcam to use (0 for default)
 
