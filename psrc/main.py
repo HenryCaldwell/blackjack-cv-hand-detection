@@ -12,7 +12,7 @@ import time
 from ultralytics import YOLO
 from evaluation.hand_utils import calculate_hand_score
 from detection.inference import run_inference
-from detection.hand_detector import group_cards
+from detection.detection_utils import group_cards
 from annotation.annotator import annotate_frame_with_scores
 from config import Config
 from evaluation.deck import CardDeck
