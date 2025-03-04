@@ -5,19 +5,22 @@ This module provides functions to group detected cards into hands based on spati
 the overlap computation from the utils module to decide which cards belong together.
 """
 
-from python.detection.detection_utils import compute_overlap
+from detection.detection_utils import compute_overlap
+from debugging.logger import setup_logger
 
-def group_cards(boxes, threshold=0.1):
+logger = setup_logger(__name__)
+
+def group_cards(boxes, overlap_threshold=0.1):
   """
   Groups bounding boxes into hands based on their overlap.
   
   Each bounding box (expressed as [x1, y1, x2, y2]) is treated as a node in a graph. An edge is added between two
-  nodes if their overlap (computed via compute_overlap) is at least the threshold. A depth-first search (DFS) is
-  then used to find connected components, where each component represents a hand.
+  nodes if their overlap (computed via compute_overlap) is at least the overlap threshold. A depth-first search
+  (DFS) is then used to find connected components, where each component represents a hand.
   
   Parameters:
     boxes (list): A list of bounding boxes.
-    threshold (float, optional): Minimum overlap ratio to connect two boxes. Defaults to 0.1.
+    overlap_threshold (float, optional): Minimum overlap ratio to connect two boxes. Defaults to 0.1.
   
   Returns:
     list: A list of groups, where each group is a list of indices corresponding to bounding boxes that form a hand.
@@ -28,9 +31,9 @@ def group_cards(boxes, threshold=0.1):
   # Add edges between boxes with sufficient overlap
   for i in range(n):
     for j in range(i + 1, n):
-      if compute_overlap(boxes[i], boxes[j]) >= threshold:
-          graph[i].append(j)
-          graph[j].append(i)
+      if compute_overlap(boxes[i], boxes[j]) >= overlap_threshold:
+        graph[i].append(j)
+        graph[j].append(i)
   
   visited = [False] * n
   groups = []

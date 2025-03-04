@@ -1,5 +1,5 @@
 """
-Utility functions for common tasks.
+Module for utility functions for common tasks.
 
 This module provides utility functions that are shared across different parts of the card detection application.
 It includes common operations such as computing the overlap ratio between two bounding boxes.

@@ -7,10 +7,12 @@ the Hi-Lo system and offers methods for removing a card, retrieving the current 
 the running and true counts.
 """
 
-# List of card labels.
+from debugging.logger import setup_logger
+
+logger = setup_logger(__name__)
+
 _CARD_LABELS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
-# Hi-Lo values: Cards 2-6 count as +1, 7-9 as 0, and 10, J, Q, K, A as -1.
 _HI_LO_VALUES = {
   "2": 1,
   "3": 1,
@@ -43,6 +45,7 @@ class CardDeck:
     self.size = size
     self.cards = {label: 4 * size for label in _CARD_LABELS}
     self.running_count = 0
+    logger.info("Initialized CardDeck with %d deck(s).", size)
 
   def remove_card(self, card_label):
     """
@@ -61,10 +64,10 @@ class CardDeck:
     if card_label in self.cards and self.cards[card_label] > 0:
       self.cards[card_label] -= 1  # Decrement the card count by one
       self.running_count += _HI_LO_VALUES.get(card_label, 0)  # Update the running count
-      print(f"Removed; {card_label} New Count; {self.cards[card_label]}")
+      logger.info("Removed card: %s", card_label)
       return True
     else:
-      print(f"Failure to Remove; {card_label}")
+      logger.warning("Failed to remove card: %s (card not available)", card_label)
       return False
   
   def get_counts(self):

@@ -7,7 +7,10 @@ out overlapping detections based on a specified overlap threshold.
 
 import numpy as np
 from ultralytics import YOLO
-from python.detection.detection_utils import compute_overlap
+from detection.detection_utils import compute_overlap
+from debugging.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 def run_inference(frame, model, overlap_threshold=0.9):
   """
@@ -35,8 +38,8 @@ def run_inference(frame, model, overlap_threshold=0.9):
       class_indices = last_results.boxes.cls.cpu().numpy().tolist()
 
       card_map = {
-          0: "A", 1: "2", 2: "3", 3: "4", 4: "5", 5: "6",
-          6: "7", 7: "8", 8: "9", 9: "10", 10: "J", 11: "Q", 12: "K"
+        0: "A", 1: "2", 2: "3", 3: "4", 4: "5", 5: "6",
+        6: "7", 7: "8", 8: "9", 9: "10", 10: "J", 11: "Q", 12: "K"
       }
 
       labels = [card_map.get(int(idx), "?") for idx in class_indices]
@@ -70,10 +73,9 @@ def apply_nms(boxes, labels, confidences, overlap_threshold):
   while indices:
     i = indices.pop(0)
     keep.append(i)
-    indices = [j for j in indices if compute_overlap(boxes_np[i], boxes_np[j]) < overlap_threshold]
+    indices = [j for j in indices if compute_overlap(boxes_np[i], boxes_np[j]) < overlap_threshold]  # Retain only those boxes with an overlap less than the threshold compared to the current box
   
   filtered_boxes = [boxes_np[i].tolist() for i in keep]
   filtered_labels = [labels[i] for i in keep]
   filtered_confidences = [confidences_np[i] for i in keep]
-  
   return filtered_boxes, filtered_labels, filtered_confidences
