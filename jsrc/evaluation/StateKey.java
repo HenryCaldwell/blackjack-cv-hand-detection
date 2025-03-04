@@ -1,4 +1,4 @@
-package jsrc.evaluation;
+package evaluation;
 
 import java.util.Arrays;
 

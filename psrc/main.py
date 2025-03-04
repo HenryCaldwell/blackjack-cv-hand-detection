@@ -10,7 +10,7 @@ results.
 import cv2
 import time
 from ultralytics import YOLO
-from config import Config
+from config.detection_settings import DetectionSettings
 from annotation.annotator import annotate_frame_with_scores
 from debugging.logger import setup_logger
 from detection.card_tracker import CardTracker
@@ -39,8 +39,8 @@ class BlackjackVisionAnalyzer:
     Initializes the BlackjackVisionAnalyzer with the provided configuration.
 
     Parameters:
-      config (Config): Configuration object containing application settings such as video source, model path, deck
-      size, inference intervals, and thresholds.
+      config (DetectionSettings): Application settings such as video source, model path, deck size, inference
+      intervals, and thresholds.
 
     The initialization process includes:
       - Setting up video capture based on whether a webcam or video file is used.
@@ -85,7 +85,7 @@ class BlackjackVisionAnalyzer:
     )
 
     # Initialize the EV engine for blackjack hand evaluation
-    self.evaluator = EVEngineWrapper(jar_path="build/EVEngine.jar", java_class="jsrc.evaluation.EVEngine")
+    self.evaluator = EVEngineWrapper(jar_path="target/blackjack-cv-ev-analyzer-1.0.0.jar", java_class="evaluation.EVEngine")
 
   def evaluate_hands(self, player_hands, dealer_hand):
     """
@@ -222,9 +222,6 @@ class BlackjackVisionAnalyzer:
     
 
 if __name__ == "__main__":
-  # Create a configuration object from the Config class
-  config = Config()
-  # Instantiate the BlackjackVisionAnalyzer with the provided configuration
+  config = DetectionSettings()
   app = BlackjackVisionAnalyzer(config)
-  # Run the main application loop
   app.run()

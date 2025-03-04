@@ -1,4 +1,4 @@
-package jsrc.evaluation;
+package evaluation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,10 +7,9 @@ import java.util.Map;
 
 /**
  * Represents an engine for calculating the expected values (EV) of various
- * actions in a blackjack game. The EV
- * represents the average outcome of a decision over many iterations. This class
- * uses memoization to cache
- * results and optimize recursive EV calculations.
+ * actions in a blackjack game. The EV represents the average outcome of a
+ * decision over many iterations. This class uses memoization to cache results
+ * and optimize recursive EV calculations.
  */
 public class EVEngine {
   private Map<StateKey, Double> cache;
@@ -39,7 +38,7 @@ public class EVEngine {
   public double calculateStandEV(int[] valueCounts, List<Integer> playerHand, List<Integer> dealerHand) {
     if (valueCounts == null || playerHand == null || dealerHand == null) {
       throw new IllegalArgumentException(
-          "Arguments to calculateStandEV cannot be null: valueCounts, playerHand, and dealerHand are required.");
+          "Arguments to calculateStandEV cannot be null: valueCounts, playerHand, and dealerHand are required");
     }
 
     return calculateStandEV(valueCounts, playerHand, dealerHand, false);
@@ -58,7 +57,7 @@ public class EVEngine {
   public double calculateHitEV(int[] valueCounts, List<Integer> playerHand, List<Integer> dealerHand) {
     if (valueCounts == null || playerHand == null || dealerHand == null) {
       throw new IllegalArgumentException(
-          "Arguments to calculateHitEV cannot be null: valueCounts, playerHand, and dealerHand are required.");
+          "Arguments to calculateHitEV cannot be null: valueCounts, playerHand, and dealerHand are required");
     }
 
     return calculateHitEV(valueCounts, playerHand, dealerHand, false);
@@ -77,7 +76,7 @@ public class EVEngine {
   public double calculateDoubleEV(int[] valueCounts, List<Integer> playerHand, List<Integer> dealerHand) {
     if (valueCounts == null || playerHand == null || dealerHand == null) {
       throw new IllegalArgumentException(
-          "Arguments to calculateDoubleEV cannot be null: valueCounts, playerHand, and dealerHand are required.");
+          "Arguments to calculateDoubleEV cannot be null: valueCounts, playerHand, and dealerHand are required");
     }
 
     return calculateDoubleEV(valueCounts, playerHand, dealerHand, false);
@@ -98,7 +97,7 @@ public class EVEngine {
   public double calculateSplitEV(int[] valueCounts, List<Integer> playerHand, List<Integer> dealerHand) {
     if (valueCounts == null || playerHand == null || dealerHand == null) {
       throw new IllegalArgumentException(
-          "Arguments to calculateHitEV cannot be null: valueCounts, playerHand, and dealerHand are required.");
+          "Arguments to calculateHitEV cannot be null: valueCounts, playerHand, and dealerHand are required");
     }
 
     if (!canSplitHand(playerHand)) {
@@ -114,8 +113,7 @@ public class EVEngine {
 
   /**
    * Recursively computes the expected value for standing based on the current
-   * card distribution and both the
-   * player's and dealer's hands.
+   * card distribution and both the player's and dealer's hands.
    *
    * @param valueCounts An array representing the current distribution of card
    *                    values in the deck.
@@ -135,7 +133,7 @@ public class EVEngine {
     int dealerScore = calculateHandScore(dealerHand);
     boolean isSoft = isSoftHand(dealerHand);
 
-    if (dealerScore > 17 || (dealerScore == 17 && (!isSoft || (isSoft && !Config.DEALER_HITS_ON_SOFT_17)))) {
+    if (dealerScore > 17 || (dealerScore == 17 && (!isSoft || (isSoft && !GameSettings.DEALER_HITS_ON_SOFT_17)))) {
       double outcome = evaluateOutcome(playerHand, dealerHand, isSplit);
       cache.put(stateKey, outcome);
 
@@ -147,7 +145,7 @@ public class EVEngine {
 
     for (int i = 0; i < valueCounts.length; i++) {
       if (valueCounts[i] > 0) {
-        if (Config.DEALER_PEAKS_FOR_21 && dealerHand.size() == 1 &&
+        if (GameSettings.DEALER_PEAKS_FOR_21 && dealerHand.size() == 1 &&
             ((dealerHand.get(0) == 10 && i == 0) || (dealerHand.get(0) == 1 && i == 9))) {
           continue;
         }
@@ -175,8 +173,7 @@ public class EVEngine {
 
   /**
    * Recursively computes the expected value for hitting based on the current card
-   * distribution and both the
-   * player's and dealer's hands.
+   * distribution and both the player's and dealer's hands.
    *
    * @param valueCounts An array representing the current distribution of card
    *                    values in the deck.
@@ -227,8 +224,7 @@ public class EVEngine {
 
   /**
    * Recursively computes the expected value for doubling based on the current
-   * card distribution and both the
-   * player's and dealer's hands.
+   * card distribution and both the player's and dealer's hands.
    *
    * @param valueCounts An array representing the current distribution of card
    *                    values in the deck.
@@ -278,8 +274,7 @@ public class EVEngine {
 
   /**
    * Recursively computes the expected value for splitting based on the current
-   * card distribution and both the
-   * player's and dealer's hands.
+   * card distribution and both the player's and dealer's hands.
    *
    * @param valueCounts An array representing the current distribution of card
    *                    values in the deck.
@@ -318,12 +313,12 @@ public class EVEngine {
         double hitEV = Double.NEGATIVE_INFINITY;
         double doubleEV = Double.NEGATIVE_INFINITY;
 
-        if (isAceSplit && Config.HIT_SPLIT_ACES || !isAceSplit) {
+        if (isAceSplit && GameSettings.HIT_SPLIT_ACES || !isAceSplit) {
           hitEV = calculateHitEV(valueCounts, playerHand, dealerHand, true);
         }
 
-        if (Config.DOUBLE_AFTER_SPLIT
-            && ((isAceSplit && Config.HIT_SPLIT_ACES && Config.DOUBLE_SPLIT_ACES) || !isAceSplit)) {
+        if (GameSettings.DOUBLE_AFTER_SPLIT
+            && ((isAceSplit && GameSettings.HIT_SPLIT_ACES && GameSettings.DOUBLE_SPLIT_ACES) || !isAceSplit)) {
           doubleEV = calculateDoubleEV(valueCounts, playerHand, dealerHand, true);
         }
 
@@ -350,8 +345,7 @@ public class EVEngine {
 
   /**
    * Calculates the total score of a hand. Aces are counted as either 1 or 11 to
-   * maximize the hand's value
-   * without busting.
+   * maximize the hand's value without busting.
    *
    * @param cards A list of integers representing the cards in the hand.
    * @return The total score of the hand.
@@ -402,8 +396,8 @@ public class EVEngine {
 
   /**
    * Checks whether the player's hand can be split. A hand can be split if it
-   * consists of exactly two cards and
-   * both cards are equal, or if both cards are tens.
+   * consists of exactly two cards and both cards are equal, or if both cards are
+   * tens.
    *
    * @param cards A list of integers representing the player's hand.
    * @return {@code true} if the hand can be split; {@code false} otherwise.
@@ -425,8 +419,8 @@ public class EVEngine {
 
   /**
    * Evaluates the final outcome of a hand based on the player's and dealer's
-   * scores. Positive values indicate a
-   * win, negative values indicate a loss, and zero represents a push.
+   * scores. Positive values indicate a win, negative values indicate a loss, and
+   * zero represents a push.
    *
    * @param playerHand A list of integers representing the player's hand.
    * @param dealerHand A list of integers representing the dealer's hand.
@@ -440,13 +434,13 @@ public class EVEngine {
     int dealerHandSize = dealerHand.size();
 
     boolean playerNaturalBlackjack = playerScore == 21 && playerHandSize == 2
-        && (!isSplit || Config.NATURAL_BLACKJACK_SPLITS);
+        && (!isSplit || GameSettings.NATURAL_BLACKJACK_SPLITS);
     boolean dealerNaturalBlackjack = dealerScore == 21 && dealerHandSize == 2;
 
     if (playerNaturalBlackjack && dealerNaturalBlackjack) {
       return 0.0;
     } else if (playerNaturalBlackjack) {
-      return Config.BLACKJACK_ODDS;
+      return GameSettings.BLACKJACK_ODDS;
     } else if (dealerNaturalBlackjack) {
       return -1.0;
     } else if (playerScore > 21) {
@@ -468,8 +462,7 @@ public class EVEngine {
 
   /**
    * Generates a unique state key for the current game configuration. This key is
-   * used for memoization to avoid
-   * redundant calculations.
+   * used for memoization to avoid redundant calculations.
    *
    * @param valueCounts An array representing the current distribution of card
    *                    values in the deck.
