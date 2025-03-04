@@ -7,9 +7,6 @@ disappear, and can trigger a callback when a card is locked.
 """
 
 from detection.detection_utils import compute_overlap
-from debugging.logger import setup_logger
-
-logger = setup_logger(__name__)
 
 class CardTracker:
   """

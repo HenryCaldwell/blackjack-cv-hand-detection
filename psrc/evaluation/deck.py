@@ -45,7 +45,7 @@ class CardDeck:
     self.size = size
     self.cards = {label: 4 * size for label in _CARD_LABELS}
     self.running_count = 0
-    logger.info("Initialized CardDeck with %d deck(s).", size)
+    logger.info("Initialized CardDeck with %d deck(s)", size)
 
   def remove_card(self, card_label):
     """

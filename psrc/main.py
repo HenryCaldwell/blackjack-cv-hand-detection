@@ -10,16 +10,16 @@ results.
 import cv2
 import time
 from ultralytics import YOLO
-from evaluation.hand_utils import calculate_hand_score
-from detection.inference import run_inference
-from detection.detection_utils import group_cards
-from annotation.annotator import annotate_frame_with_scores
 from config import Config
-from evaluation.deck import CardDeck
-from detection.card_tracker import CardTracker
+from annotation.annotator import annotate_frame_with_scores
 from debugging.logger import setup_logger
-from video.video_stream import VideoStreamReader
+from detection.card_tracker import CardTracker
+from detection.detection_utils import group_cards
+from detection.inference import run_inference
+from evaluation.deck import CardDeck
 from evaluation.ev_engine import EVEngineWrapper
+from evaluation.hand_utils import calculate_hand_score
+from video.video_stream import VideoStreamReader
 
 logger = setup_logger(__name__)
 

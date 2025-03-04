@@ -135,7 +135,7 @@ public class EVEngine {
     int dealerScore = calculateHandScore(dealerHand);
     boolean isSoft = isSoftHand(dealerHand);
 
-    if (dealerScore > 17 || (dealerScore == 17 && (!isSoft || (isSoft && !GameRules.DEALER_HITS_ON_SOFT_17)))) {
+    if (dealerScore > 17 || (dealerScore == 17 && (!isSoft || (isSoft && !Config.DEALER_HITS_ON_SOFT_17)))) {
       double outcome = evaluateOutcome(playerHand, dealerHand, isSplit);
       cache.put(stateKey, outcome);
 
@@ -147,7 +147,7 @@ public class EVEngine {
 
     for (int i = 0; i < valueCounts.length; i++) {
       if (valueCounts[i] > 0) {
-        if (GameRules.DEALER_PEAKS_FOR_21 && dealerHand.size() == 1 &&
+        if (Config.DEALER_PEAKS_FOR_21 && dealerHand.size() == 1 &&
             ((dealerHand.get(0) == 10 && i == 0) || (dealerHand.get(0) == 1 && i == 9))) {
           continue;
         }
@@ -318,12 +318,12 @@ public class EVEngine {
         double hitEV = Double.NEGATIVE_INFINITY;
         double doubleEV = Double.NEGATIVE_INFINITY;
 
-        if (isAceSplit && GameRules.HIT_SPLIT_ACES || !isAceSplit) {
+        if (isAceSplit && Config.HIT_SPLIT_ACES || !isAceSplit) {
           hitEV = calculateHitEV(valueCounts, playerHand, dealerHand, true);
         }
 
-        if (GameRules.DOUBLE_AFTER_SPLIT
-            && ((isAceSplit && GameRules.HIT_SPLIT_ACES && GameRules.DOUBLE_SPLIT_ACES) || !isAceSplit)) {
+        if (Config.DOUBLE_AFTER_SPLIT
+            && ((isAceSplit && Config.HIT_SPLIT_ACES && Config.DOUBLE_SPLIT_ACES) || !isAceSplit)) {
           doubleEV = calculateDoubleEV(valueCounts, playerHand, dealerHand, true);
         }
 
@@ -440,13 +440,13 @@ public class EVEngine {
     int dealerHandSize = dealerHand.size();
 
     boolean playerNaturalBlackjack = playerScore == 21 && playerHandSize == 2
-        && (!isSplit || GameRules.NATURAL_BLACKJACK_SPLITS);
+        && (!isSplit || Config.NATURAL_BLACKJACK_SPLITS);
     boolean dealerNaturalBlackjack = dealerScore == 21 && dealerHandSize == 2;
 
     if (playerNaturalBlackjack && dealerNaturalBlackjack) {
       return 0.0;
     } else if (playerNaturalBlackjack) {
-      return GameRules.BLACKJACK_ODDS;
+      return Config.BLACKJACK_ODDS;
     } else if (dealerNaturalBlackjack) {
       return -1.0;
     } else if (playerScore > 21) {

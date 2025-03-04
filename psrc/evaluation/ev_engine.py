@@ -7,8 +7,8 @@ hit, double, split).
 """
 
 import jpype
-from evaluation.jpype_utils import deck_to_java_array, hand_to_java_array_list
 from debugging.logger import setup_logger
+from evaluation.jpype_utils import deck_to_java_array, hand_to_java_array_list
 
 logger = setup_logger(__name__)
 
