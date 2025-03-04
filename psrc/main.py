@@ -166,7 +166,7 @@ class BlackjackVisionAnalyzer:
     if player_hands and dealer_hand:
       self.evaluate_hands(player_hands, dealer_hand)
     else:
-      logger.debug("Insufficient hands for EV evaluation: player_hands=%s, dealer_hand=%s", player_hands, dealer_hand)
+      logger.info("Insufficient hands for EV evaluation")
 
     # Log current deck composition for debugging purposes
     logger.info("Current deck composition: %s", self.deck.get_counts())
