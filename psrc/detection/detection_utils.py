@@ -5,7 +5,9 @@ This module provides helper functions for card detection tasks, including comput
 bounding boxes and grouping detected cards into hands based on spatial relationships.
 """
 
-def compute_overlap(boxA, boxB):
+from typing import List, Dict, Optional
+
+def compute_overlap(boxA: List[float], boxB: List[float]) -> float:
   """
   Computes the overlap ratio between two axis-aligned bounding boxes.
   
@@ -40,7 +42,7 @@ def compute_overlap(boxA, boxB):
 
   return intersection_area / min_area
 
-def group_cards(boxes, overlap_threshold=0.1):
+def group_cards(boxes: List[List[float]], overlap_threshold: float = 0.1) -> Dict[str, Optional[List[List[int]]]]:
   """
   Groups bounding boxes into hands based on their overlap.
   

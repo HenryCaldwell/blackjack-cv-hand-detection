@@ -6,6 +6,8 @@ This module defines the VideoStreamReader class, which encapsulates the function
 """
 
 import cv2
+import numpy as np
+from typing import Union, Optional
 from debugging.logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -18,7 +20,7 @@ class VideoStreamReader:
   once video processing is complete.
   """
 
-  def __init__(self, source=0):
+  def __init__(self, source: Union[int, str] = 0) -> None:
     """
     Initializes the VideoStreamReader instance.
 
@@ -39,7 +41,7 @@ class VideoStreamReader:
     
     logger.info("Video source opened: %s", source)
     
-  def read_frame(self):
+  def read_frame(self) -> Optional[np.ndarray]:
     """
     Reads a single frame from the video capture source.
 
@@ -57,7 +59,7 @@ class VideoStreamReader:
     
     return frame
   
-  def release(self):
+  def release(self) -> None:
     """
     Releases the video capture resource.
 

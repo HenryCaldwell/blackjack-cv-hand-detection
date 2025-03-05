@@ -7,8 +7,14 @@ visualization helps in real-time monitoring of detection and scoring performance
 """
 
 import cv2
+import numpy as np
+from typing import List, Dict, Any
 
-def annotate_frame_with_scores(frame, boxes, hands_dict, labels, hand_totals):
+def annotate_frame_with_scores(
+  frame: np.ndarray, boxes: List[List[float]], 
+  hands_dict: Dict[str, Any], labels: List[str],
+  hand_totals: Dict[Any, int]
+) -> np.ndarray:
   """
   Annotates the given frame with bounding boxes and labels, taking into account the new grouping format.
   

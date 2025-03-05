@@ -10,6 +10,7 @@ results.
 import cv2
 import time
 from ultralytics import YOLO
+from typing import List, Dict, Any, Optional
 from config.detection_settings import DetectionSettings
 from annotation.annotator import annotate_frame_with_scores
 from debugging.logger import setup_logger
@@ -34,7 +35,7 @@ class BlackjackVisionAnalyzer:
   for player hands. It also processes video frames by annotating them with detection and evaluation data.
   """
 
-  def __init__(self, config):
+  def __init__(self, config: DetectionSettings) -> None:
     """
     Initializes the BlackjackVisionAnalyzer with the provided configuration.
 
@@ -72,7 +73,7 @@ class BlackjackVisionAnalyzer:
     self.deck = CardDeck(config.deck_size)
     
     # Define a callback function to remove a card from the deck when it is locked
-    def on_card_locked(card_label):
+    def on_card_locked(card_label: str) -> None:
       self.deck.remove_card(card_label)
     
     # Initialize the CardTracker with thresholds and callback settings
@@ -87,7 +88,10 @@ class BlackjackVisionAnalyzer:
     # Initialize the EV engine for blackjack hand evaluation
     self.evaluator = EVEngineWrapper(jar_path="target/blackjack-cv-ev-analyzer-1.0.0.jar", java_class="evaluation.EVEngine")
 
-  def evaluate_hands(self, player_hands, dealer_hand):
+  def evaluate_hands(
+    self, player_hands: List[List[str]],
+    dealer_hand: List[str]
+  ) -> None:
     """
     Evaluates the expected value (EV) of different actions for each player hand against the dealer's hand.
 
@@ -119,7 +123,7 @@ class BlackjackVisionAnalyzer:
       else:
         logger.warning("No valid evaluation for hand %d", i)
 
-  def process_frame(self, frame):
+  def process_frame(self, frame: Any) -> Any:
     """
     Processes a single video frame: runs card detection inference, tracks and groups cards,
     calculates hand scores, evaluates EV for blackjack decisions, and annotates the frame.
@@ -175,7 +179,7 @@ class BlackjackVisionAnalyzer:
     annotated = annotate_frame_with_scores(frame.copy(), boxes, grouped_hands, stable_labels, hand_totals)
     return annotated
 
-  def run(self):
+  def run(self) -> None:
     """
     Starts the main loop of the application.
 

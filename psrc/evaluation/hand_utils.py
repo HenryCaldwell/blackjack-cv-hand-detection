@@ -5,7 +5,9 @@ This module provides helper functions for evaluating blackjack hands. It include
 the total score of a hand, correctly handling the flexible value of Aces and the fixed value of face cards.
 """
 
-def calculate_hand_score(cards):
+from typing import List
+
+def calculate_hand_score(cards: List[str]) -> int:
   """
   Calculate the total score of a blackjack hand.
 

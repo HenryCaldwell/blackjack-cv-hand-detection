@@ -7,8 +7,9 @@ consistent logging setup for the application.
 """
 
 import logging
+from logging import Logger
 
-def setup_logger(name='rain_vision', level=logging.DEBUG):
+def setup_logger(name: str = 'rain_vision', level: int = logging.DEBUG) -> Logger:
   """
   Set up and return a logger with the specified name and logging level.
 

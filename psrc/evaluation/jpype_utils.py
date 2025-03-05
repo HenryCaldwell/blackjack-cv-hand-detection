@@ -6,8 +6,9 @@ required by the EV engine.
 """
 
 from jpype import JInt, JArray, JClass
+from typing import Dict, List, Any
 
-def deck_to_java_array(deck):
+def deck_to_java_array(deck: Dict[str, int]) -> Any:
   """
   Convert a Python dictionary representing a deck into a Java integer array.
 
@@ -28,7 +29,7 @@ def deck_to_java_array(deck):
   deck_values = [ace_count] + digit_counts + [ten_count]  # Combine the counts into one list
   return JArray(JInt)([JInt(val) for val in deck_values])  # Convert each integer to a JInt and return as a Java int array
 
-def hand_to_java_array_list(hand):
+def hand_to_java_array_list(hand: List[str]) -> Any:
   """
   Convert a Python list representing a hand of cards into a Java ArrayList of integers.
 

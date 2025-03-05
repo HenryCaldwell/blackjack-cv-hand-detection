@@ -1,6 +1,5 @@
 package evaluation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -480,13 +479,5 @@ public class EVEngine {
     boolean playerSoft = isSoftHand(playerHand);
 
     return new StateKey(valueCounts, playerScore, dealerScore, playerSoft, isSplit, action);
-  }
-
-  public static void main(String[] args) {
-    EVEngine engine = new EVEngine();
-    int[] values = { 4, 3, 2, 4, 3, 4, 4, 4, 3, 14 };
-    List<Integer> player = new ArrayList<>(List.of(10, 3));
-    List<Integer> dealer = new ArrayList<>(List.of(5));
-    System.out.println(engine.calculateHitEV(values, player, dealer));
   }
 }

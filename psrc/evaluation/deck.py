@@ -7,6 +7,7 @@ the Hi-Lo system and offers methods for removing a card, retrieving the current 
 the running and true counts.
 """
 
+from typing import Dict
 from debugging.logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -30,7 +31,7 @@ _HI_LO_VALUES = {
 }
 
 class CardDeck:
-  def __init__(self, size):
+  def __init__(self, size: int) -> None:
     """
     Initializes a new CardDeck with a standard count for each card.
 
@@ -47,7 +48,7 @@ class CardDeck:
     self.running_count = 0
     logger.info("Initialized CardDeck with %d deck(s)", size)
 
-  def remove_card(self, card_label):
+  def remove_card(self, card_label: str) -> bool:
     """
     Removes one instance of the specified card from the deck and updates the running count.
     
@@ -70,7 +71,7 @@ class CardDeck:
       logger.warning("Failed to remove card: %s (card not available)", card_label)
       return False
   
-  def get_counts(self):
+  def get_counts(self) -> Dict[str, int]:
     """
     Retrieves a copy of the current card counts in the deck.
     
@@ -79,7 +80,7 @@ class CardDeck:
     """
     return self.cards.copy()
   
-  def get_running_count(self):
+  def get_running_count(self) -> int:
     """
     Retrieves the current running count of the deck.
     
@@ -88,7 +89,7 @@ class CardDeck:
     """
     return self.running_count
   
-  def get_true_count(self):
+  def get_true_count(self) -> float:
     """
     Calculates the true count of the deck.
     

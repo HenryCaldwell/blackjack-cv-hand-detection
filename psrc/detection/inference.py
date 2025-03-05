@@ -7,12 +7,13 @@ out overlapping detections based on a specified overlap threshold.
 
 import numpy as np
 from ultralytics import YOLO
+from typing import List, Tuple
 from detection.detection_utils import compute_overlap
 from debugging.logger import setup_logger
 
 logger = setup_logger(__name__)
 
-def run_inference(frame, model, overlap_threshold=0.9):
+def run_inference(frame: np.ndarray, model: YOLO, overlap_threshold: float = 0.9) -> Tuple[List[List[float]], List[str], List[float]]:
   """
   Runs YOLO inference on the given frame, applies NMS, and returns filtered detections.
   
@@ -47,7 +48,10 @@ def run_inference(frame, model, overlap_threshold=0.9):
   filtered_boxes, filtered_labels, filtered_confidences = apply_nms(boxes, labels, confidences, overlap_threshold)  # Apply NMS to filter detections
   return filtered_boxes, filtered_labels, filtered_confidences
 
-def apply_nms(boxes, labels, confidences, overlap_threshold):
+def apply_nms(
+  boxes: List[List[float]], labels: List[str],
+  confidences: List[float], overlap_threshold: float
+) -> Tuple[List[List[float]], List[str], List[float]]:
   """
   Applies Non-Maximum Suppression (NMS) to remove overlapping bounding boxes.
   

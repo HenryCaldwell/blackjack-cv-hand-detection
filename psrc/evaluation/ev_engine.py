@@ -7,6 +7,7 @@ hit, double, split).
 """
 
 import jpype
+from typing import Dict, List
 from debugging.logger import setup_logger
 from evaluation.jpype_utils import deck_to_java_array, hand_to_java_array_list
 
@@ -20,7 +21,10 @@ class EVEngineWrapper:
   from the specified JAR file, and exposes a method to calculate the expected value for different
   game actions (stand, hit, double, split).
   """
-  def __init__(self, jar_path="java/build/EVEngine.jar", java_class="jsrc.evaluation.EVEngine"):
+  def __init__(
+    self, jar_path: str = "java/build/EVEngine.jar",
+    java_class: str = "evaluation.EVEngine"
+  ) -> None:
     """
     Initialize the EVEngineWrapper instance.
 
@@ -33,7 +37,7 @@ class EVEngineWrapper:
     self.started = False
     self._start_jvm()
 
-  def _start_jvm(self):
+  def _start_jvm(self) -> None:
     """
     Start the Java Virtual Machine (JVM) and initialize the EV engine.
 
@@ -51,7 +55,11 @@ class EVEngineWrapper:
     self.ev_engine = self.EVEngineClass()
     self.started = True
 
-  def calculate_ev(self, action, deck, player_hand, dealer_hand):
+  def calculate_ev(
+    self, action: str,
+    deck: Dict[str, int], player_hand: List[str],
+    dealer_hand: List[str]
+  ) -> float:
     """
     Calculate the expected value (EV) for a given game action using the EV engine.
 
@@ -88,7 +96,7 @@ class EVEngineWrapper:
     ev = method_mapping[action](value_counts_java, player_hand_java, dealer_hand_java)  # Retrieve the appropriate EV calculation method based on the action and execute it
     return ev
 
-  def shutdown(self):
+  def shutdown(self) -> None:
     """
     Shutdown the Java Virtual Machine (JVM).
 

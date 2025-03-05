@@ -6,6 +6,7 @@ consecutive frames based on detection boxes. It manages confirmation of tracked 
 disappear, and can trigger a callback when a card is locked.
 """
 
+from typing import List, Dict, Callable, Optional, Any
 from detection.detection_utils import compute_overlap
 
 class CardTracker:
@@ -17,7 +18,11 @@ class CardTracker:
   callback can be triggered when a card is locked.
   """
   
-  def __init__(self, confirmation_frames, disappear_frames, confidence_threshold, overlap_threshold, on_lock_callback=None):
+  def __init__(
+    self, confirmation_frames: int, 
+    disappear_frames: int, confidence_threshold: float, 
+    overlap_threshold: float, on_lock_callback: Optional[Callable[[str], None]] = None
+  ) -> None:
     """
     Initialize the CardTracker instance.
 
@@ -35,7 +40,10 @@ class CardTracker:
     self.on_lock_callback = on_lock_callback
     self.tracked_cards = {}
 
-  def update(self, boxes, labels, confidences):
+  def update(
+    self, boxes: List[List[float]],
+    labels: List[str], confidences: List[float]
+  ) -> List[str]:
     """
     Update the tracked cards based on new detection boxes.
 

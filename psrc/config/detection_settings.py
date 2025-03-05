@@ -1,8 +1,23 @@
 import os
 import yaml
+from typing import Tuple
 
 class DetectionSettings:
-  def __init__(self, config_file="config.yaml"):
+  yolo_path: str
+  video_path: str
+  use_webcam: bool
+  webcam_index: int
+  inference_interval: float
+  inference_frame_size: Tuple[int, int]
+  overlap_threshold: float
+  inference_overlap_threshold: float
+  confidence_threshold: float
+  confirmation_frames: int
+  disappear_frames: int
+  deck_size: int
+  display_frame_size: Tuple[int, int]
+
+  def __init__(self, config_file: str = "config.yaml") -> None:
     if not os.path.isfile(config_file):
       raise FileNotFoundError("Configuration file not found: " + config_file)
     with open(config_file, "r") as f:
