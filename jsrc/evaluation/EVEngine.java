@@ -96,7 +96,7 @@ public class EVEngine {
   public double calculateSplitEV(int[] valueCounts, List<Integer> playerHand, List<Integer> dealerHand) {
     if (valueCounts == null || playerHand == null || dealerHand == null) {
       throw new IllegalArgumentException(
-          "Arguments to calculateHitEV cannot be null: valueCounts, playerHand, and dealerHand are required");
+          "Arguments to calculateSplitEV cannot be null: valueCounts, playerHand, and dealerHand are required");
     }
 
     if (!canSplitHand(playerHand)) {
